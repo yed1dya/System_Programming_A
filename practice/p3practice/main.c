@@ -42,15 +42,21 @@ int findFirstNonZero2(int a[], size_t n){
 }
 
 int main(){
-    int arr[5];
+    char arr[5];
     int i=0;
     char c;
-    do{
-        printf("enter number: ");
-    scanf("%c", &c);
+    while(c != 'q'){
+        arr[i] = c;
+        i++;
+        if(i == 5) i = 0;
+        printf("enter number. to quit press q. ");
+        scanf("%c", &c);
     }
-    printf("enter number: ");
-    scanf("%c", &c);
+    i = 0;
+    while(arr[i]){
+        printf("%c", arr[i++]);
+    }
+
     // for(int i=0; i<10; i++){
     //     printf("%d, ", i);
     // }
