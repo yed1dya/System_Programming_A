@@ -1,3 +1,10 @@
 {
-    "makefile.makefilePath": "/home/yedidya/sysprogA/practice/p4practice/Makefile"
+    "makefile.makefilePath": "/home/yedidya/sysprogA/practice/p4practice/Makefile",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/yedidya/sysprogA",
+            "binaryPath": "/home/yedidya/sysprogA/str",
+            "binaryArgs": []
+        }
+    ]
 }

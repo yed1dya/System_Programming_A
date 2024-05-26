@@ -118,7 +118,6 @@ void swapWords(char s[]){
 int abu(char* num){
     bool go=true;
     int a = (int)*(num)-48, b = (int)*(num+1)-48, expected, next, i=2, j=0;
-    char current;
     printf("%c", *num);
     printf("%c", *(num+1));
     while (go){
