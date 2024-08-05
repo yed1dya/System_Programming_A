@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+typedef struct node{
+    int _data;
+    struct node*_left;
+    struct node*_right;
+}Node;
+
+void insert(Node**root,int data){
+    Node**next = root;
+    while(*next){
+            if(data >= (*next)->_data){
+            next = &((*next)->_right);
+        }
+        else{
+            next = &((*next)->_left);
+        }
+    }
+    *next = (Node*)malloc(sizeof(Node));
+    if(*next){
+        (*next)->_data = data;
+        (*next)->_left = NULL;
+        (*next)->_right = NULL;
+    } else{
+        printf("node malloc fail\n");
+    }
+}
+
+int height(Node* root) {
+    if(root == NULL) {
+        return 0;
+    }
+    int leftHeight = height(root->_left);
+    int rightHeight = height(root->_right);
+    if (leftHeight > rightHeight) {
+        return 1 + leftHeight; 
+    }
+    return 1 + rightHeight;
+}

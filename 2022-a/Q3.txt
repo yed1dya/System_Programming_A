@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int _data;
+    struct Node*_next;
+}Node;
+
+Node*new_node(int data){
+    Node*node = (Node*)malloc(sizeof(Node));
+    if(!node){
+        printf("new_node(): malloc fail");
+        return NULL;
+    }
+    node->_data = data;
+    node->_next = NULL;
+    return node;
+}
+
+void insert(Node*head, int data){
+    Node*node = new_node(data);
+    if(!node){
+        printf("insert(): node create fail.");
+        return;
+    }
+    Node*t = head;
+    while(t->_next && data > t->_next->_data){
+        t = t->_next;
+    }
+    node->_next = t->_next;
+    t->_next = node;
+}
+
+void print(Node*head, int val){
+    printf("printing bigger than %d:\n", val);
+    Node*t = head->_next;
+    while(t){
+        if(val <= t->_data){
+            printf("%d, ", t->_data);
+        }
+        t = t->_next;
+    }
+    printf("\n");
+}
+
+void reverse(Node*head){
+    printf("reversing\n");
+    Node*t = head->_next->_next, *u = t->_next;
+    head->_next->_next = NULL;
+    while(t){
+        print(head,-5);
+        t->_next = head->_next;
+        head->_next = t;
+        t = u;
+        if(u){
+            u = u->_next;
+        }
+    }
+}
+
+void release(Node*head){
+    Node*currnt = head->_next, *next;
+    while(currnt){
+        next = currnt->_next;
+        free(currnt);
+        currnt = next;
+    }
+    head->_next = NULL;
+}
+
+int main(){
+    Node head = {0, NULL};
+    insert(&head, 4);
+    print(&head, -5);
+    insert(&head, -2);  
+    print(&head, -5);
+    insert(&head, 2);
+    print(&head, -5);
+    insert(&head, 6);
+    print(&head, -5);
+    print(&head, 3);
+    reverse(&head);
+    print(&head, -5);
+    printf("release:\n");
+    release(&head);
+    return 0;
+}

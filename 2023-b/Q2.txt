@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <math.h>
+
+int ex2(int status){
+    int mask1 = 0b1111111;
+    mask1 <<= 1;
+    int c2 = status & mask1;
+    c2 >>= 1;
+    int c1 = status & (1 << 9);
+    c1 >>= 9;
+    int o = status & (3 << 11);
+    o >>= 11;
+    printf("c2: %d, c1: %d, o: %d\n",c2,c1,o);
+    if(o == 0){
+        return pow((double)c2,(double)c1);
+    }
+    if(o == 1){
+        return c1;
+    }
+    if(o == 2){
+        return c2 - c1;
+    }
+    if(o == 3){
+        return c1 - c2;
+    }
+    return 0;
+}
+
+struct bits{
+    unsigned int c2:7;
+    unsigned int c1:1;
+    unsigned int o:2;
+};
+
+int ex21(int status){
+    struct bits b = {(status>>1),(status>>9),(status>>11)};
+        printf("c2: %d, c1: %d, o: %d\n",b.c2,b.c1,b.o);
+    if(b.o == 0){
+        return pow((double)b.c2,(double)b.c1);
+    }
+    if(b.o == 1){
+        return b.c1;
+    }
+    if(b.o == 2){
+        return b.c2 - b.c1;
+    }
+    if(b.o == 3){
+        return b.c1 - b.c2;
+    }
+    return 0;
+}
+
+int main(){
+    int num = 0b01011110110111;
+    printf("%d\n",ex2(num));
+    printf("%d\n",ex21(num));
+}

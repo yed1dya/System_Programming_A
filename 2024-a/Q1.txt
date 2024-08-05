@@ -1,0 +1,12 @@
+C = gcc
+F = -WALL -g
+
+myprogram: source1.o source2.o source3.o
+	$(C) $(F) source1.o source2.o source3.o -o myprogram
+
+# "$<" is the first prerequisite.
+# "$@" is the target file.
+%.o: %.c %.h
+	$(C) $(F) -c $< -o $@
+
+# if the content of source.3 is erased, we'll get a compilation error: could not compile source.3 

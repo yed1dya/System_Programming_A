@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// the problem with the original function: " *str " is a char, so the assignment:
+// int res = *str
+// has 2 problems: we need to cast from char to int, and the number we get is the char value and not the digit value.
+// a similar problem with  res+= *str; 
+int func(char* str){ 
+    int sigen = 1; 
+    if(*str == '-'){ 
+        sigen = -1; 
+        str++; 
+        } 
+    int res = (int)((*str)-'0'); 
+    str++; 
+    while(*str){ 
+        res*=10; 
+        //printf("%c",*str);
+        res+= (int)((*str)-'0'); 
+        str++; 
+    } 
+    //printf("\n");
+    return res*sigen; 
+}
+
+char*f(int num){
+    char*str = {0};
+    int size = 0;
+    while(num > 0){
+        size++;
+        char c = (char)(num%10)+'0';
+        char*t = (char*)malloc(sizeof(char)*(size));
+        if(!t){
+            printf("malloc fail");
+            exit(1);
+        }
+        for(int i=size-2; i>-1; i--){
+            t[i+1] = str[i];
+        }
+        t[0] = c;
+        num /= 10;
+        str = t;
+    }
+    return str;
+}
+
+int main(){
+    char* str = "123456789"; 
+    printf("a: %d\n", func(str)); 
+    printf("b: %ld\n", strlen(str));
+    printf("c: %s\n", f(func(str)));
+}

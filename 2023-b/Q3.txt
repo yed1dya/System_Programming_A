@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+typedef struct item { 
+    int value; 
+    struct item *next; 
+}item;
+
+void insert(item**pNewList, item*node){
+    if (*pNewList == NULL || (*pNewList)->value >= node->value) {
+        node->next = *pNewList;
+        *pNewList = node;
+        return;
+    }
+    item*t = *pNewList;
+    while(t != NULL && (*pNewList)->next->value > node->value){
+        t = t->next;    
+    }
+    node->next = (*pNewList)->next;
+    (*pNewList)->next = node;
+}
+
+void merge(item*arr[], int size, item**pNewList){
+    item*next[size];
+    for(int i=0; i<size; i++){
+        next[i] = arr[i];
+    }
+    while(1){
+        item*node = NULL;
+        int place = -1;
+        for(int i=0; i<size; i++){
+            if(next[i] != NULL && (node == NULL || next[i]->value < node->value)){
+                node = next[i];
+                place = i;
+            }
+        }
+        if(node == NULL){
+            break;
+        }
+        insert(pNewList,node);
+        next[place] = next[place]->next;
+    }
+}

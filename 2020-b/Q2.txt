@@ -1,0 +1,91 @@
+void two_nums(int a, int b){
+    int count = 0;
+    int*arr = (int*)malloc(sizeof(int)*b);
+    if(!arr){
+        printf("malloc fail\n");
+        exit(1);
+    }
+    while(a>0){
+        count++;
+        for(int i=b-1; i>-1; i--){
+            arr[i] = arr[i-1];
+        }
+        arr[0] = a % 10;
+        a /= 10;
+    }
+    for(int i=0; i<b; i++){
+        printf("%d",arr[i]);
+    }
+    printf("\n");
+}
+
+void cleanup(char**arr, size_t len){
+    for(int i=0; i<len; i++){
+        if(arr[i]!=NULL){
+            free(arr[i]);
+        }
+    }
+    free(arr);
+}
+
+char**arr2(char*str){
+    char*p1 = str;
+    size_t count = 0, max = 0;
+    while(*p1){
+        printf("%c",*p1);
+        if(*p1 == ' '){
+            count++;
+        }
+        if(count > max){
+            max = count;
+        }
+        p1++;
+    }
+    printf("\n");
+    max++;
+    char**out_arr = (char**)malloc(count*sizeof(char*));
+    if(out_arr==NULL){
+        printf("malloc fail\n");
+        cleanup(out_arr, count);
+        return 0;
+    }
+    p1 = str;
+    size_t i = 0;
+    int a = 0;
+    while(*p1){
+        printf("%d\n", a++);
+        char*word = (char*)malloc(max*sizeof(char));
+        if(word==NULL){
+            printf("calloc fail\n");
+            cleanup(out_arr, count);
+            return 0;
+        }
+        int j=0;
+        while(*p1 != ' '){
+            *(word+j) = *p1;
+            j++;
+            p1++;
+        }
+        *(word+j) = 0;
+        *(out_arr+i) = word;
+        printf("%s\n",word);
+        i++;
+        p1++;
+    }
+    return out_arr;
+}
+
+int last(char*str, char c){
+    int place = -1, count = 0;
+    char*ptr = str;
+    while(*ptr){
+        printf("%c",*ptr);
+        if(*ptr == c){
+            place = count;
+        }
+        count++;
+        ptr++;
+    }
+    printf("\n");
+    return place;
+}

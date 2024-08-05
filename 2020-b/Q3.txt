@@ -1,0 +1,84 @@
+typedef struct Node{
+    int matrix[2][3];
+    struct Node*next;
+} Node, *pNode;
+
+void free_node_list(pNode*head){
+    pNode*p = head;
+    *head = NULL;
+    while(*p){
+        pNode t = *p;
+        p = &((*p)->next);
+        free(t);
+    }
+}
+
+pNode create_node(int m[2][3]){
+    pNode new_node = (pNode)malloc(sizeof(Node));
+    if(new_node==NULL){
+        printf("malloc fail (node create)");
+        free(new_node);
+        return NULL;
+    }
+    new_node->next = NULL;
+    for(int i=0; i<2; i++){
+        for(int j=0; j<3; j++){
+            new_node->matrix[i][j] = m[i][j];
+        }
+    }
+    return new_node;
+}
+
+void add(pNode node, pNode*head){
+    pNode*p = head;
+    while(*p){
+        p = &((*p)->next);
+    }
+    *p = node;
+}
+
+void print_list(pNode head){
+    printf("printing\n");
+    while(head){
+        for(int i=0; i<2; i++){
+            for(int j=0; j<3; j++){
+                printf("%d ",head->matrix[i][j]);
+            }
+            printf("\n");
+        }
+        head = head->next;
+    }
+}
+
+int main(){
+    double a1[7] = {1.2, 2.3, 43.2};
+    double a2[7];
+    arr(a1,a2,sizeof(a1));
+    for(size_t i=0; i<7; ++i){
+        printf("%f, ", a2[i]);
+    }
+    char a[] = {'A','B', 'C'};
+    char * ptr = a;
+    char val;
+    val = *++ptr;
+    printf("\n%c, %c\n",val,*ptr);
+    val = *ptr++;
+    printf("%c, %c\n",val,*ptr);
+    printf("%d\n",last("asdfghjasdfg",'h'));
+    char*str = "abc def ghi jkl";
+    char** arr3 = arr2(str);
+    for(int i=0; i<4; i++){
+        printf("%s, ",arr3[i]);
+    }
+    printf("\n");
+    int m1[2][3] = {{1,2,3},{4,5,6}};
+    int m2[2][3] = {{3,1,2},{6,4,5}};
+    int m3[2][3] = {{2,3,1},{5,6,4}}; 
+    pNode list = NULL;
+    add(create_node(m1),&list);
+    add(create_node(m2),&list);
+    add(create_node(m3),&list);
+    print_list(list);
+    free_node_list(&list);
+    print_list(list);
+}

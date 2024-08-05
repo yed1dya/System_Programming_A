@@ -1,0 +1,51 @@
+typedef struct matrix{
+    int**mat;
+    size_t cols;
+    size_t rows;
+} matrix, *pmatrix;
+
+pmatrix mat(size_t rows, size_t cols){
+    pmatrix new_mat = (pmatrix)malloc(sizeof(new_mat));
+    new_mat->rows = rows;
+    new_mat->cols = cols;
+    new_mat->mat = (int**)malloc(rows*sizeof(int*));
+    for(int i=0; i<rows; i++){
+        new_mat->mat[i] = (int*)calloc(cols,sizeof(int));
+    }
+    return new_mat;
+}
+
+void assign_mat(pmatrix m, int *vals[]){
+    for(int i=0; i<m->rows; i++){
+        for(int j=0; j<m->cols; j++){
+            m->mat[i][j] = vals[i][j];
+        }
+    }
+}
+
+pmatrix add(pmatrix a, pmatrix b){
+    pmatrix c = mat(a->rows, a->cols);
+    for(int i=0; i<c->rows; i++){
+        for(int j=0; j<c->cols; j++){
+            c->mat[i][j] = a->mat[i][j]+b->mat[i][j];
+        }
+    }
+    return c;
+}
+
+void print(pmatrix m){
+    for(int i=0; i<m->rows; i++){
+        for(int j=0; j<m->cols; j++){
+            printf("%d ",m->mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void free_mat(pmatrix m){
+    for(int i=0; i<m->rows; i++){
+        free(m->mat[i]);
+    }
+    free(m->mat);
+    free(m);
+}

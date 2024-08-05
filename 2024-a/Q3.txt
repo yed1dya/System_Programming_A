@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct nums{
+    int _i;
+    long _l;
+}nums;
+
+nums* f1(){
+    int len;
+    printf("enter number of items: ");
+    scanf("%d",&len);
+    nums*arr = (nums*)malloc(sizeof(nums)*len);
+    if(!arr){
+        printf("malloc fail\n");
+        exit(1);
+    }
+    for(int i=0; i<len; i++){
+        printf("\n%d:\nenter int: ",(i+1));
+        scanf("%d",&(arr[i]._i));
+        printf("\nenter long:");
+        scanf("%d",&(arr[i]._l));
+    }
+    return arr;
+}
+
+void f2(nums*arr, int len, void(*write_func)(int,int,long,const char*)){
+    for(int i=0; i<len; i++){
+        write_func(i,arr[i]._i,arr[i]._l,"output.bin");
+    }
+}
+
+nums* f3(int index){
+    FILE*f = fopen("output.bin","rb");
+    if(!f){
+        printf("file open fail\n");
+        exit(1);
+    }
+    if(fseek(f,index*sizeof(nums),SEEK_SET) != 0){
+        nums*n = (nums*)malloc(sizeof(nums));
+        if(!n){
+            printf("malloc fail\n");
+            exit(1);
+        }
+        fread(n,sizeof(nums),1,f);
+        return n;
+    }
+    return NULL;
+}
+
+void write_function(int index,int i,long l,const char*filename){
+    // do whatever
+}
+
+int main(){
+    nums*n = f1();
+    f2(n,sizeof(n),write_function);
+    nums*n1 = f3(0);
+    printf("int: %d, long: %ld\n",n1->_i, n1->_l);
+    return 0;
+}

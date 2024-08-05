@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int max_new_increase_substr(char* s){
+    int len = strlen(s);
+    int count = 0;
+    for(int i=0; i<len; i++){
+        int seen[26] = {0};
+        char biggest = s[i];
+        for(int j=i; j<len; j++){
+            if(j-i > count){
+                count = j-i;
+            }
+            char c = s[j];
+            if(c > biggest){
+                biggest = c;
+            }
+            if(!seen[c - 'a'] && c < biggest){
+                break;
+            }
+            seen[c - 'a'] = 1;
+        }
+        if(i == len-1){
+            return count;
+        }
+    }
+    return count;
+}
+
+int main(){
+    char c, *str = (char*)malloc(sizeof(char)), *t = NULL;
+    if(!str){
+        printf("malloc fail\n");
+        exit(1);
+    }
+    str[0] = '\0';
+    size_t len = 1;
+    while((c = getchar()) != '\n'){
+        t = (char*)realloc(str, len+1);
+        if(!t){
+            printf("realloc fail\n");
+            free(str);
+            exit(1);
+        }
+        str = t;
+        str[len-1] = c;
+        str[len] = '\0';
+        len++;
+    }
+    printf("string is %s\nf(%s) = %d\n",t,t,max_new_increase_substr(t));
+    free(str);
+    return 0;
+}

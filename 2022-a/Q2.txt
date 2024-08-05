@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// char * m[7] is an array of 7 pointers to chars. sizeof(m) is sizeof a the array, which is 7 times sizeof a pointer (8 bytes usually), so 56. sizeof(*m) is size of a pointer.
+// m[7] means that m is the name of an array of length 7. char *  means that the array is of char pointers. it is the same as char * (m[7]);
+// char (*m)[7] is a pointer to an array of 7 chars. sizeof(m) is sizeof the pointer. sizeof(*m) is size of the array. each char is 1 byte, so 7 bytes.
+// (*m) means that m is a pointer. the parentheses keep it from being attached to the [7], so it stays a single pointer.
+
+FILE*compare(const char*name1, const char*name2, const char*name3){
+    FILE*file1 = fopen(name1, "r");
+    FILE*file2 = fopen(name2, "r");
+    FILE*output = fopen(name3, "a");
+
+    if(!file1 || !file2 || !output){
+        printf("file open fail");
+        if(file1) fclose(file1);
+        if(file2) fclose(file2);
+        if(output) fclose(output);
+        return NULL;
+    }
+
+    char word1[128], word2[128];
+    while(fscanf(file1, "%s", word1)==1 && fscanf(file2, "%s", word2)){
+        if(strcmp(word1, word2)==0){
+            fprintf(output, "%s ", word1);
+        }
+        else{
+            fprintf(output, "%s %s", word1, word2);
+        }
+    }
+    while(fscanf(file1, "%s", word1)==1){
+        fprintf(output, "%s ", word1);
+    }
+    while(fscanf(file2, "%s", word2)==1){
+        fprintf(output, "%s ", word2);
+    }
+    fclose(file1);
+    fclose(file2);
+    return output;
+}
+
+void count(char*str){
+    int i=0, up=0, low=0;
+    while(str[i]){
+        if(str[i]>='A' && str[i]<='Z'){
+            up++;
+        }
+        if(str[i]>='a' && str[i]<='z'){
+            low++;
+        }
+        i++;
+    }
+    printf("up: %d, low: %d\n", up, low);
+}
+
+int main(){
+    count("aSnbuIHB OZhA; OH sdf");
+
+    char * x[7];
+    printf("char * x[7];\nsizeof(x): %lu, sizeof(*x): %lu\n", sizeof(x), sizeof(*x));
+    char (*y)[7];
+    printf("char (*y)[7];\nsizeof(y): %lu, sizeof(*y): %lu\n", sizeof(y), sizeof(*y));
+    return 0;
+}

@@ -1,0 +1,100 @@
+#include <stdio.h>
+
+typedef struct bookRecord{
+    int s_id;
+    int b_id;
+    char s_name[20];
+    int date;
+    int cost; 
+}Book;
+
+typedef struct studentRecord{
+    int s_id;
+    char name[10];
+    char l_name[10];
+    int dep;
+    int year;
+}Student;
+
+Book*read_books(FILE*f, int*size){
+    if(!f){
+        printf
+        ("file error");
+        exit(0);
+    }
+    char row[42] = {0};
+    Book*records = (Book*)malloc(sizeof(Book));
+    if(!records){
+        printf("malloc fail");
+        exit(1);
+    }
+    int counter = 0;
+    while(fscanf(f, "%s", row) != EOF){
+        Book*cpy = records;
+        records = (Book*)realloc(records, sizeof(Book)*(counter+1));
+        if(!records){
+            printf("realloc fail");
+            free(cpy);
+            exit(1);
+        }
+        char t[10] = {0};
+        strcopy(t,row,9);
+        records[counter].s_id = atoi(t);
+
+        char t[6] = {0};
+        strcopy(t,row+9,5);
+        records[counter].b_id = atoi(t);
+
+        strcopy(records[counter].s_name,row+14,20);
+
+        char t[7] = {0};
+        strcopy(t,row+34,6);
+        records[counter].date = atoi(t);
+
+        char t[4] = {0};
+        strcopy(t,row+40,3);
+        records[counter].cost = atoi(t);
+    }
+    *size = counter;
+    return records;
+}
+
+Student*read_students(FILE*f, int*size){
+    return NULL;
+}
+
+int library(FILE*student, FILE*lending){
+    int size_books = 0, size_students = 0;
+    Book*books = read_books(lending, &size_books);
+    Student*students = read_students(students, &size_students);
+    int flag = 0;
+    for(int i=0; i<size_students; i++){
+        flag = 1;
+        for(int j=0; j<size_books; j++){
+            if(books[j].s_id == students[i].s_id){
+                char dep[2] = itoa(students[i].dep);
+                char name[] = {dep[0], dep[1], '.', 't', 'x', 't'};
+                FILE*f = fopen(name, "a");
+                if(!f){
+                    printf("file open fail\n");
+                    exit(1);
+                }
+                fprintf(f,"%d%s%s\n",students[i].s_id,students[i].name,students[i].l_name);
+                int sum = 0;
+                for(int k=j; k<size_books; k++){
+                    if(books[k].s_id != students[i].s_id){
+                        flag = 0;
+                        fprintf(f,"%d\n",sum);
+                        break;
+                    }
+                    else{
+                        sum+=books[k].cost;
+                        fprintf(f,"%d%s%d%d\n",books[k].b_id,books[k].name,books[k].date,books[k].cost);
+                    }
+                }
+                fclose()
+            }
+        }
+    }
+
+}

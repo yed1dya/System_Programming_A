@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define ROWS 3
+#define COLS 5
+
+void f(int*z){ // gets pointer to arr
+    int *a, b;
+    z++; // increments the pointer. z now points at 20.
+    a = &z[0]; // a points to the address of z[0], which is now 20.
+    b = z[2]; // b is now whatever is at z[2], in this case 40.
+    (*a)--; // whatever a points at (20), is decremented. 
+    ++b; // b is incremented.
+    // arr is now {10,19,30,40,50}
+}
+
+// the parameter can be a 1D array, because
+// A 2D array is stored consecutively in memory,
+// so we can treat it as a 1D array.
+int get_1D_arr(int arr[], int n){
+    return arr[n];
+}
+// (this gives a compile warning, but whatever)
+
+int main(){
+    int arr[5] = {10,20,30,40,50}, i;
+    f(arr);
+    for(i=0; i<5; i++){
+        printf("%d ",arr[i]);
+    }
+    printf("\n");
+
+    int arr2[ROWS][COLS] = {{1,2,3,4,5},{6,7,8,9,10},{11,12,13,14,15}}; 
+    printf ("%d\n", get_1D_arr(arr2,5)); 
+
+    return 0;
+}
+

@@ -1,0 +1,30 @@
+void arr(const double arr1[], double arr2[], size_t len){
+    size_t size = len/sizeof(arr1[0]);
+    for(int i=0; i<size; ++i){
+        arr2[i] = 2*arr1[i];
+    }
+}
+
+int main(){
+    // inits array of size 7. last 4 spaces are 0.
+    double a1[7] = {1.2, 2.4, 4.8};
+    double a2[7];
+    arr(a1,a2,sizeof(a1));
+    for(size_t i=0; i<7; ++i){
+        printf("%f, ", a2[i]);
+    } // will print: 2.400000, 4.800000, 9.600000, 0.000000, 0.000000, 0.000000, 0.000000, 
+
+    // init char array:
+    char a[] = {'A','B', 'C'};
+    // pointer to the array:
+    char * ptr = a;
+    char val;
+    // val equals: whatever (++ptr) points at.
+    // the '++' happens first. so ptr points to 'B', and then val = ptr.
+    val = *++ptr;
+    printf("\n%c, %c\n",val,*ptr); // will print B, B
+    // val equals: whatever ptr points at, and then ptr++.
+    // so ptr points to 'C', and then ptr++.
+    val = *ptr++;
+    printf("%c, %c\n",val,*ptr); // will print B, 
+}

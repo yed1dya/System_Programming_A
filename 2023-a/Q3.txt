@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct node{
+    int _data;
+    struct node*_next;
+}node;
+
+typedef struct queue{
+    int _size;
+    node*_head;
+    node*_tail;
+}queue, *pqueue;
+
+void push(queue*q, int num){
+    node*new_node = (node*)malloc(sizeof(node));
+    if(!new_node){
+        printf("malloc fail\n");
+        exit(1);
+    }
+    new_node->_data = num;
+    new_node->_next = NULL;
+    if(q->_tail != NULL){
+        q->_tail->_next = new_node;
+    }
+    q->_tail = new_node;
+    if(q->_head == NULL){
+        q->_head = new_node;
+    }
+    q->_size++;
+}
+
+int pop(queue*q){
+    if(q->_size <= 0){
+        return -1;
+    }
+    int ans = q->_head->_data;
+    node*temp = q->_head;
+    q->_head = q->_head->_next;
+    if(q->_head == NULL){
+        q->_tail = NULL;
+    }
+    free(temp);
+    q->_size--;
+    return ans;
+}
+
+void free_q(queue*q){
+    while(q->_head){
+        node*t = q->_head;
+        q->_head = q->_head->_next;
+        free(t);
+    }
+    q->_tail = NULL;
+    q->_size = 0;
+}
+
+int main(){
+    queue*q = (queue*)malloc(sizeof(queue));
+    push(q, 5);
+    printf("%d\n",pop(q));
+    printf("%d\n",pop(q));
+    free_q(q);
+    free(q);
+    return 0;
+}

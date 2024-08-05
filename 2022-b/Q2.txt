@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct worker{
+    char*_name;
+    int _num;
+    int _index;
+    struct worker **_workers;
+}worker;
+
+worker*create(char*name, int num){
+    worker*w = (worker*)malloc(sizeof(worker));
+    if(!w){
+        printf("malloc fail\n");
+        exit(1);
+    }
+    w->_name = strdup(name);
+    if(!w->_name){
+        printf("strdup fail\n");
+        free(w);
+        exit(1);
+    }
+    w->_num = num;
+    w->_index = 0;
+    w->_workers = (worker**)malloc(sizeof(worker*)*5);
+    if (!w->_workers) {
+        printf("malloc fail\n");
+        free(w->_name);
+        free(w);
+        exit(1);
+    }
+    return w;
+}
+
+void insert(worker**tree, worker*w, int num){
+    if(*tree == NULL){
+        *tree = w;
+        return;
+    }
+    if((*tree)->_num == num){
+        int index = (*tree)->_index;
+        if(index < 5){
+            (*tree)->_workers[index] = w;
+            (*tree)->_index++;
+        } else{
+            printf("Cannot add more workers to %s\n", (*tree)->_name);
+        }
+        return;
+    }
+    for(int i=0; i<(*tree)->_index; i++){
+        insert(&(*tree)->_workers[i], w, num);
+    }
+}
+
+void free_worker(worker *w) {
+    if (w == NULL) return;
+    for (int i = 0; i < w->_index; i++) {
+        free_worker(w->_workers[i]);
+    }
+    free(w->_workers);
+    free(w->_name);
+    free(w);
+}
+
+int main(){
+    
+}
